@@ -33,13 +33,6 @@ class Main {
         return null;
     }
 
-    /*
-    * 답안지를 주면 점수가 가장 높은 사람이 튀어나옵니다
-    * 각 정답자는 맵으로 표시
-    * 정답이 '아닐'때마다 -1
-    * 값이 0인 사람이 최고점
-    *
-    * */
     public static int[] solutionOfExam(int[] answers) {
         int[] man1 = {1, 2, 3, 4, 5};
         int[] man2 = {2, 1, 2, 3, 2, 4, 2, 5};
