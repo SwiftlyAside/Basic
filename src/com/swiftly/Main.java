@@ -1,11 +1,12 @@
 package com.swiftly;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
 /*
-* Basic Self-exercIse Cource
-* yes
+* Basic Self-exercIse Course
+* Oh yeah. Sounds fun?
 *
 * */
 class Main {
@@ -38,13 +39,12 @@ class Main {
 
     /*
     * HashMap OR Array
-    *
     * */
     public static int[] solutionOfExam(int[] answers) {
-        int[] man1 = {1, 2, 3, 4, 5};
-        int[] man2 = {2, 1, 2, 3, 2, 4, 2, 5};
-        int[] man3 = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
-        int[] count = new int[3], res = new int[3];
+        int[]   man1 = {1, 2, 3, 4, 5},
+                man2 = {2, 1, 2, 3, 2, 4, 2, 5},
+                man3 = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
+        int[] count = new int[3];
 
         int i = 0;
         for (int answer : answers) {
@@ -60,11 +60,15 @@ class Main {
         // Evaluate Max Value
         int max = Math.max(count[0], Math.max(count[1], count[2]));
         i = 0;
+        ArrayList<Integer> temp = new ArrayList<>();
         for (int val : count) {
             if (val == max)
-                res[i] = i + 1;
-                i++;
+                temp.add(i++);
         }
+        i = 0;
+        int[] res = new int[temp.size()];
+        for (int r : temp)
+            res[i++] = r + 1;
         return res;
     }
 }
