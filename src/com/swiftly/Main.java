@@ -108,46 +108,30 @@ class Main {
     }
 
     public static int solutionOfUniform(int n, int[] lost, int[] reserve) {
-        // 전체 학생의 수: 2 <= n <= 30
-        // lost는 체육복을 잃어버린 학생의 번호
-        // reserve는 여벌의 체육복이 있는 학생의 번호
-        // lost는 -
-        // reserve는 lost된 값을 +
-        // lost와 reserve 모두 해당하는 학생은 체육복을 빌려줄 수 없다.
-        int answer = n;
-        // HashMap 생성
-        HashMap<Integer, Integer> students = new HashMap<>();
-        // 여벌보유자는 1, 아닌 사람은 0
-        for (int i = 1; i <= n; i++)
-            students.put(i, 0);
+        // lost는 체육복을 잃어버린 학생
+        // reserve는 여벌의 체육복이 있는 학생
 
-        for (int student : students.keySet()) {
-            for (int value : reserve) {
-                if (student == value){
-                    students.put(student, students.get(student) + 1);
+        int answer = n - lost.length;
+
+        // lost인 학생의 처리: value를 0으로, reserve에 포함되지 않았다면 n을 1감소
+        for (int l : lost) {
+            for (int r : reserve) {
+                if (l == r) {
+                    answer--;
+                    l = -1;
+                    r = -1;
+                    break;
                 }
             }
         }
 
-        // lost => 여벌을 가진 사람은 여벌(value)을 0으로.
-        for (int student : students.keySet()) {
-            for (int value : lost) {
-                if (student == value){
-                    if (students.get(student) == 0) answer--;
-                    students.put(student, 0);
-                    System.out.println("lost: " + students.get(student));
-                }
-            }
-        }
-
-        // 여벌을 n까지 채움
-        // reserve 중복검사와 처리
-        for (int student : students.keySet()) {
-            for (int value : reserve) {
-                if (answer == n) break;
-                if (student == value && students.get(student) == 1) {
-                    System.out.println("reserve:" +students.get(student));
+        // reserve인 학생의 처리: 현재 value가 0이 아닌 경우에만 value를 0으로, n을 1증가
+        for (int l : lost) {
+            for (int r : reserve) {
+                if (l == r + 1 || l == r - 1) {
                     answer++;
+                    r = -1;
+                    break;
                 }
             }
         }
