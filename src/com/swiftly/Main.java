@@ -5,16 +5,16 @@ import java.util.Collections;
 import java.util.HashMap;
 
 /*
-* Basic Self-exercIse Course
-* Oh yeah. Sounds fun?
-*
-* */
+ * Basic Self-exercIse Course
+ * Oh yeah. Sounds fun?
+ *
+ * */
 class Main {
-    private static String[] par = {"mislav", "stanko", "mislav", "ana"};
-    private static String[] com = {"stanko", "ana", "mislav"};
-    private static int[] questions = {1, 2, 3, 4, 5} /*{1, 3, 2, 4, 2}*/,
-            array = {1, 5, 2, 6, 3, 7, 4};
-    private static int[][] commands = {{2, 5, 3}, {4, 4, 1}, {1, 7, 3}};
+    private static final String[] par = {"mislav", "stanko", "mislav", "ana"};
+    private static final String[] com = {"stanko", "ana", "mislav"};
+    private static final int[] questions = {1, 2, 3, 4, 5} /*{1, 3, 2, 4, 2}*/;
+    private static final int[] array = {1, 5, 2, 6, 3, 7, 4};
+    private static final int[][] commands = {{2, 5, 3}, {4, 4, 1}, {1, 7, 3}};
 
     public static void main(String[] args) {
 //        System.out.println(solutionOfMarathon(par, com));
@@ -34,7 +34,7 @@ class Main {
             map.put(player, map.getOrDefault(player, 0) + 1);
         for (String complete : completion)
             map.put(complete, map.get(complete) - 1);
-        for (String key : map.keySet()){
+        for (String key : map.keySet()) {
             if (map.get(key) != 0)
                 return key;
         }
@@ -43,10 +43,10 @@ class Main {
 
 
     /*
-    * HashMap OR Array
-    * */
+     * HashMap OR Array
+     * */
     public static int[] solutionOfExam(int[] answers) {
-        int[]   man1 = {1, 2, 3, 4, 5},
+        int[] man1 = {1, 2, 3, 4, 5},
                 man2 = {2, 1, 2, 3, 2, 4, 2, 5},
                 man3 = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
         int[] count = new int[3];
@@ -108,34 +108,26 @@ class Main {
     }
 
     public static int solutionOfUniform(int n, int[] lost, int[] reserve) {
-        // lost는 체육복을 잃어버린 학생
-        // reserve는 여벌의 체육복이 있는 학생
+        int[] people = new int[n];
+        int answer = n;
 
-        int answer = n - lost.length;
+        for (int l : lost)
+            people[l - 1]--;
+        for (int r : reserve)
+            people[r - 1]++;
 
-        // lost인 학생의 처리: value를 0으로, reserve에 포함되지 않았다면 n을 1감소
-        for (int l : lost) {
-            for (int r : reserve) {
-                if (l == r) {
+        for (int i = 0; i < people.length; i++) {
+            if (people[i] == -1) {
+                if (i - 1 >= 0 && people[i - 1] == 1) {
+                    people[i]++;
+                    people[i - 1]--;
+                } else if (i + 1 < people.length && people[i + 1] == 1) {
+                    people[i]++;
+                    people[i + 1]--;
+                } else
                     answer--;
-                    l = -1;
-                    r = -1;
-                    break;
-                }
             }
         }
-
-        // reserve인 학생의 처리: 현재 value가 0이 아닌 경우에만 value를 0으로, n을 1증가
-        for (int l : lost) {
-            for (int r : reserve) {
-                if (l == r + 1 || l == r - 1) {
-                    answer++;
-                    r = -1;
-                    break;
-                }
-            }
-        }
-        // 결과 반환
         return answer;
     }
 }
