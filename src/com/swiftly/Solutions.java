@@ -105,6 +105,43 @@ public class Solutions {
     }
 
     public int solutionOfCrane(int[][] board, int[] moves) {
-        return 0;
+        /*
+
+        crane은 임의 접근법으로 배열을 건드림
+        0은 비어있음을 의미함
+        숫자는 인형
+        결과배열은 정렬하지않음
+        0이 아닌 인접원소를 발견하면 서로 0이 됨
+        더이상 찾을 수 없을때까지 반복
+        똥카오는 너가 바라는 것만큼 친절하지 않습니다. 문제의 구린내를 느껴보고 힘껏 빡치십시오.
+
+         */
+        // 1 ~ 1000
+        int[] popped = new int[1000];
+        int idx = 0;
+
+        //fuck 시발 라이언 시발
+
+
+        // moves 각 원소마다 반복
+        for (int i = 0; i < moves.length; i++) {
+            // board[moves[i] - 1] 의 0이 아닌 마지막 값을 popped의 앞부터 채움
+            // 응 틀림 그림하고 전혀다르구만
+            for (int j = 0; j < board[moves[i] - 1].length; j++) {
+                if (board[moves[i] - 1][j] != 0) {
+                    popped[idx] = board[moves[i] - 1][j];
+                    board[moves[i] - 1][j] = 0;
+                    idx++;
+                }
+            }
+            // popped idx와 같을 때 까지의 각 원소 검사
+            if (idx != 0 && popped[idx] == popped[idx - 1]) {
+                popped[idx] = 0;
+                popped[idx - 1] = 0;
+                idx -= 2;
+                if (idx < 0) idx = 0;
+            }
+        }
+        return idx;
     }
 }

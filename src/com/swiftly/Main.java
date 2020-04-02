@@ -13,9 +13,11 @@ class Main {
     private static final int[][] commands = {{2, 5, 3}, {4, 4, 1}, {1, 7, 3}};
 
     public static void main(String[] args) {
-        int[][] board = {{0,0,0,0,0},{0,0,1,0,3},{}};
+        int[][] board = {{0, 0, 0, 0, 0}, {0, 0, 1, 0, 3}, {0, 2, 5, 0, 1}, {4, 2, 4, 4, 2}, {3, 5, 1, 3, 1}};
+        int[] moves = {1, 5, 3, 5, 1, 2, 1, 4};
         Solutions solutions = new Solutions();
-        int solution = solutions.solutionOfCrane(null, null);
+        int solution = solutions.solutionOfCrane(board, moves);
+        System.out.println(solution);
 //        System.out.println(solutionOfMarathon(par, com));
 //        System.out.println(Arrays.toString(solutionOfExam(questions)));
 //        System.out.println(Arrays.toString(solutionOfKthValue(array, commands)));
