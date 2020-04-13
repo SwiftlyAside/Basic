@@ -144,4 +144,22 @@ public class Solutions {
         }
         return idx;
     }
+
+    public boolean solutionOfPhone(String[] phone_book) {
+        for (int i = 0; i < phone_book.length; i++) {
+            for(int j = 0; j < phone_book.length; j++) {
+                if (i != j && phone_book[j].startsWith(phone_book[i])) return false;
+            }
+        }
+        return true;
+    }
+
+    public int solutionOfSpy(String[][] clothes) {
+        int answer = 0;
+        /*
+        *
+        *
+        * */
+        return answer;
+    }
 }
