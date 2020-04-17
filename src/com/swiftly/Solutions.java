@@ -1,8 +1,11 @@
 package com.swiftly;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+
+import static java.util.stream.Collectors.*;
 
 public class Solutions {
     public String solutionOfMarathon(String[] participant, String[] completion) {
@@ -147,7 +150,7 @@ public class Solutions {
 
     public boolean solutionOfPhone(String[] phone_book) {
         for (int i = 0; i < phone_book.length; i++) {
-            for(int j = 0; j < phone_book.length; j++) {
+            for (int j = 0; j < phone_book.length; j++) {
                 if (i != j && phone_book[j].startsWith(phone_book[i])) return false;
             }
         }
@@ -155,11 +158,29 @@ public class Solutions {
     }
 
     public int solutionOfSpy(String[][] clothes) {
-        int answer = 0;
-        /*
-        *
-        *
-        * */
-        return answer;
+        /*int answer = 1;
+        Map<String, Integer> map = new HashMap<>();
+        for (String[] clothe : clothes) {
+            // 종류에 해당하는 값이 key로 적절함.
+            String key = clothe[1];
+            if (!map.containsKey(key))
+                map.put(key, 1);
+
+            // 중복인 경우 동일 종류의 value를 늘린다
+            else
+                map.put(key, map.get(key) + 1);
+        }
+
+        // 종류별 가짓수를 모두 곱함
+        for (int i : map.values())
+            answer *= i + 1;
+        return answer - 1;*/
+
+        // 같은 결과 괴악한 표현방법
+        return Arrays.stream(clothes)
+                .collect(groupingBy(p -> p[1], mapping(p -> p[0], counting())))
+                .values()
+                .stream()
+                .reduce(1L, (x, y) -> x * (y + 1)).intValue() - 1;
     }
 }
