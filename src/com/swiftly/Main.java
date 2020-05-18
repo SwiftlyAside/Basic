@@ -21,12 +21,15 @@ class Main {
     private static final String[][] clothes = {{"yellow_hat", "headgear"}, {"blue_sunglasses", "eyewear"}, {"green_turban", "headgear"}};
     private static final String[][] clothes2 = {{"crow_mask", "face"}, {"blue_sunglasses", "face"}, {"smoky_makeup", "face"}};
 
+    // 프테 : 다이얼
+    private static final String[] ps = {"82195", "64723"};
+    private static final String[] ps2 = {"00000000000000000000", "91919191919191919191"};
 
     public static void main(String[] args) {
         int[][] board = {{0, 0, 0, 0, 0}, {0, 0, 1, 0, 3}, {0, 2, 5, 0, 1}, {4, 2, 4, 4, 2}, {3, 5, 1, 3, 1}};
         int[] moves = {1, 5, 3, 5, 1, 2, 1, 4};
         Solutions solutions = new Solutions();
-        int solution = solutions.solutionOfSpy(clothes);
+        int solution = solutions.solutionOfDial(ps2[0], ps[1]);
         System.out.println(solution);
 //        System.out.println(solutionOfMarathon(par, com));
 //        System.out.println(Arrays.toString(solutionOfExam(questions)));

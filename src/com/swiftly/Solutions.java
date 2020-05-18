@@ -1,13 +1,12 @@
 package com.swiftly;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 import static java.util.stream.Collectors.*;
 
 public class Solutions {
+
+
     public String solutionOfMarathon(String[] participant, String[] completion) {
         HashMap<String, Integer> map = new HashMap<>();
         for (String player : participant)
@@ -182,5 +181,203 @@ public class Solutions {
                 .values()
                 .stream()
                 .reduce(1L, (x, y) -> x * (y + 1)).intValue() - 1;
+    }
+
+    // 프테 : 다이얼
+    public int solutionOfDial(String p, String s) {
+        int answer = 0;
+        for (int i = 0; i < p.length(); i++) {
+            int x = Integer.parseInt(String.valueOf(p.charAt(i)));
+            int y = Integer.parseInt(String.valueOf(s.charAt(i)));
+            int through = Math.min(Math.floorMod(x - y, 10), Math.floorMod(y - x, 10));
+            answer += through;
+        }
+        return answer;
+    }
+
+    // 프테: 로봇
+    public int solutionOfRobot(int[][] office, int r, int c, String[] move) {
+        // 처음에는 북쪽을 바라본다.
+        final int NORTH = -5;
+        final int SOUTH = -4;
+        final int EAST = -3;
+        final int WEST = -2;
+
+        int answer = 0;
+        int direction = NORTH;
+        int idxX = c;
+        int idxY = r;
+
+        answer = clean(office, answer, idxX, idxY);
+
+        for (String s : move) {
+            switch (s) {
+                case "go":
+                    if (office[idxY][idxX] != -1) {
+                        answer = clean(office, answer, idxX, idxY);
+                        int nextX = 0;
+                        int nextY = 0;
+                        if (direction == NORTH)
+                            nextY = -1;
+                        else if (direction == EAST)
+                            nextX = 1;
+                        else if (direction == SOUTH)
+                            nextY = 1;
+                        else
+                            nextX = -1;
+                        if (idxX + nextX == -1 || idxX + nextX == office[idxY].length) break;
+                        if (idxY + nextY == -1 || idxY + nextY == office.length) break;
+                        if (office[idxY + nextY][idxX + nextX] == -1) break;
+                        idxX += nextX;
+                        idxY += nextY;
+                        answer = clean(office, answer, idxX, idxY);
+                    }
+                    break;
+                case "right":
+                    if (direction == NORTH)
+                        direction = EAST;
+                    else if (direction == EAST)
+                        direction = SOUTH;
+                    else if (direction == SOUTH)
+                        direction = WEST;
+                    else
+                        direction = NORTH;
+                    break;
+                case "left":
+                    if (direction == NORTH)
+                        direction = WEST;
+                    else if (direction == WEST)
+                        direction = SOUTH;
+                    else if (direction == SOUTH)
+                        direction = EAST;
+                    else
+                        direction = NORTH;
+                    break;
+            }
+        }
+
+        return answer;
+    }
+
+    private int clean(int[][] office, int answer, int idxX, int idxY) {
+        if (office[idxY][idxX] != 0) {
+            answer += office[idxY][idxX];
+            office[idxY][idxX] = 0;
+        }
+        return answer;
+    }
+
+    public int solutionOfSwap(int[] numbers, int K) {
+        int answer = 0;
+        for (int i = 0; i < numbers.length; i++) {
+            for (int j = i + 1; j < numbers.length; j++) {
+                if (Math.abs(numbers[i] - numbers[j]) > K) {
+                    int temp = numbers[i];
+                    numbers[i] = numbers[j];
+                    numbers[j] = temp;
+                    answer++;
+                }
+            }
+        }
+        if (answer != 0) return answer;
+        else return -1;
+    }
+
+    public String[] solutionOfChat(String[] record) {
+        Map<String, String> id = new HashMap<>();
+        List<String[]> enter = new ArrayList<>();
+        List<String> list = new ArrayList<>();
+        for (String rec : record) {
+            String[] temp = rec.split(" ");
+            enter.add(new String[]{temp[0], temp[1]});
+            if (temp.length == 3) id.put(temp[1], temp[2]);
+        }
+        for (String[] s : enter) {
+            if ("Enter".equals(s[0]))
+                list.add(id.get(s[1]) + "님이 들어왔습니다.");
+            else if ("Leave".equals(s[0]))
+                list.add(id.get(s[1]) + "님이 나갔습니다.");
+        }
+        return list.toArray(String[]::new);
+    }
+
+    public int solution(int[] scoville, int K) {
+        int answer = 2;
+        Queue<Integer> integers = new LinkedList<>();
+        for (int s : scoville)
+            integers.add(s);
+        // 원소가 하나가 될 때까지
+        // 찾고 섞기
+        while (!(integers.size() == 1)) {
+            int min1 = 99, min2;
+            for (Integer i : integers) {
+                min2 = min1;
+                min1 = Math.min(min1, i);
+            }
+            integers.remove(min1);
+        }
+
+        return -1;
+    }
+
+    int result = 0;
+    int len, t;
+
+    public int solutionOfTarget(int[] numbers, int target) {
+        len = numbers.length;
+        t = target;
+        search(numbers, 0, 0);
+        return result;
+    }
+
+    public void search(int[] numbers, int sum, int n) {
+        if (n == len) {
+            if (t == sum) result++;
+            return;
+        }
+        search(numbers, sum + numbers[n], n + 1);
+        search(numbers, sum - numbers[n], n + 1);
+    }
+
+    public int solutionOfText(String str1, String str2) {
+        int answer = 0;
+        List<String> s1 = new ArrayList<>();
+        List<String> s2 = new ArrayList<>();
+        List<String> duct = new ArrayList<>();
+        List<String> sum = new ArrayList<>();
+        // str을 2글자씩 교차
+        for (int i = 0; i < str1.length(); i++) {
+            if (i + 1 < str1.length() &&
+                    Character.isLetterOrDigit(str1.charAt(i)) &&
+                    Character.isLetterOrDigit(str1.charAt(i + 1))) {
+                String e = str1.substring(i, i + 2).toUpperCase();
+                if (!s1.contains(e)) s1.add(e);
+            }
+        }
+        for (int i = 0; i < str2.length(); i++) {
+            if (i + 1 < str2.length() &&
+                    Character.isLetterOrDigit(str2.charAt(i)) &&
+                    Character.isLetterOrDigit(str2.charAt(i + 1))) {
+                String e = str2.substring(i, i + 2).toUpperCase();
+                if (!s2.contains(e)) s2.add(e);
+            }
+        }
+
+        System.out.println(s1);
+        System.out.println(s2);
+
+        for (String s : s1) {
+            if (!sum.contains(s)) sum.add(s);
+            if (s2.contains(s)) duct.add(s);
+        }
+
+        for (String s : s2) {
+            if (!sum.contains(s)) sum.add(s);
+        }
+
+        if (sum.size() != 0) answer = (int) (65536.0 * ((double) duct.size() / (double) sum.size()));
+        else answer = 65536;
+
+        return answer;
     }
 }
