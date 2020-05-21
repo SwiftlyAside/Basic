@@ -7,6 +7,9 @@ import static java.util.stream.Collectors.*;
 public class Solutions {
 
 
+    int result = 0;
+    int len, t;
+
     public String solutionOfMarathon(String[] participant, String[] completion) {
         HashMap<String, Integer> map = new HashMap<>();
         for (String player : participant)
@@ -320,9 +323,6 @@ public class Solutions {
         return -1;
     }
 
-    int result = 0;
-    int len, t;
-
     public int solutionOfTarget(int[] numbers, int target) {
         len = numbers.length;
         t = target;
@@ -379,5 +379,71 @@ public class Solutions {
         else answer = 65536;
 
         return answer;
+    }
+
+    public int solutionOfMini(int[] nums) {
+        int answer = 0;
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                for (int k = j + 1; k < nums.length; k++) {
+                    if (primality(nums[i] + nums[j] + nums[k]))
+                        answer++;
+                }
+            }
+        }
+
+        return answer;
+    }
+
+    public boolean primality(int n) {
+        int i = 2;
+        while (i * i <= n) {
+            if (n % i == 0) return false;
+            i++;
+        }
+        return true;
+    }
+
+    public int solutionOfSaver(int[] people, int limit) {
+        Arrays.sort(people);
+        int count = 0;
+        int i = 0, j = people.length - 1;
+        while (i <= j) {
+            if (i == j) {
+                count++;
+                break;
+            }
+            if (people[i] + people[j] <= limit) i++;
+            count++;
+            j--;
+        }
+        return count;
+
+        /*
+        다른 방법: i와 보트 이동횟수의 관계를 분석하다 나온 듯한 방법
+        for (; i < j; --j) {
+            if (people[i] + people[j] <= limit)
+                ++i;
+        }
+        return people.length - i;
+        */
+    }
+
+    public String solutionOfBigNum(String number, int k) {
+        StringBuilder answer = new StringBuilder();
+        int index = 0;
+        char max;
+        if (number.charAt(index) == '0') return "0";
+        for (int i = 0; i < number.length() - k; i++) {
+            max = '0';
+            for (int j = index; j <= i + k; j++) {
+                if (max < number.charAt(j)) {
+                    max = number.charAt(j);
+                    index = j + 1;
+                }
+            }
+            answer.append(max);
+        }
+        return answer.toString();
     }
 }
