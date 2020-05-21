@@ -1,6 +1,7 @@
 package com.swiftly;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 import static java.util.stream.Collectors.*;
 
@@ -339,47 +340,44 @@ public class Solutions {
         search(numbers, sum - numbers[n], n + 1);
     }
 
-    public int solutionOfText(String str1, String str2) {
-        int answer = 0;
-        List<String> s1 = new ArrayList<>();
-        List<String> s2 = new ArrayList<>();
-        List<String> duct = new ArrayList<>();
-        List<String> sum = new ArrayList<>();
-        // str을 2글자씩 교차
-        for (int i = 0; i < str1.length(); i++) {
-            if (i + 1 < str1.length() &&
-                    Character.isLetterOrDigit(str1.charAt(i)) &&
-                    Character.isLetterOrDigit(str1.charAt(i + 1))) {
-                String e = str1.substring(i, i + 2).toUpperCase();
-                if (!s1.contains(e)) s1.add(e);
+    // 뉴스 클러스터링
+    public int solutionOfClustering(String str1, String str2) {
+        List<String> subset1 = subset(str1.toUpperCase());
+        List<String> subset2 = subset(str2.toUpperCase());
+        List<Integer> checkList = new ArrayList<>();
+
+        int union, intersection = 0;
+
+        for (String s1 : subset1) {
+            for (int y = 0; y < subset2.size(); y++) {
+                String s2 = subset2.get(y);
+                if (s1.equals(s2) && !checkList.contains(y)) {
+                    intersection++;
+                    checkList.add(y);
+                    break;
+                }
             }
         }
-        for (int i = 0; i < str2.length(); i++) {
-            if (i + 1 < str2.length() &&
-                    Character.isLetterOrDigit(str2.charAt(i)) &&
-                    Character.isLetterOrDigit(str2.charAt(i + 1))) {
-                String e = str2.substring(i, i + 2).toUpperCase();
-                if (!s2.contains(e)) s2.add(e);
-            }
-        }
-        for (String s : s1) {
-            if (!sum.contains(s)) sum.add(s);
-            if (s2.contains(s)) duct.add(s);
-        }
 
-        for (String s : s2) {
-            if (!sum.contains(s)) sum.add(s);
-        }
+        union = subset1.size() + subset2.size() - intersection;
+        return union == 0 && intersection == 0 ? 65536 : (int) (((double) intersection / union) * 65536);
 
-        if (sum.size() != 0) answer = (int) (65536.0 * ((double) duct.size() / (double) sum.size()));
-        else answer = 65536;
-
-        return answer;
     }
 
     public List<String> subset(String string) {
         List<String> list = new ArrayList<>();
         char[] chars = string.toCharArray();
+        String str;
+        int i = 0, j = 1;
+
+        while (j <= chars.length - 1) {
+            str = String.valueOf(chars[i]) + chars[j];
+            boolean isMatch = Pattern.matches("^[A-Z]*$", str);
+            if (isMatch)
+                list.add(str);
+            i++;
+            j++;
+        }
         return list;
     }
 
@@ -447,5 +445,29 @@ public class Solutions {
             answer.append(max);
         }
         return answer.toString();
+    }
+
+    public int[] solutionOfTower(int[] heights) {
+        Stack<Integer> stack = new Stack<>();
+        int sender, receiver;
+        int senderLength = heights.length;
+        int[] answer = new int[senderLength];
+        for (int height : heights) stack.push(height);
+
+        for (int i = senderLength - 1; i >= 0; i--) {
+            sender = stack.pop();
+            int num = 0;
+            while (!stack.empty()) {
+                receiver = stack.pop();
+                num++;
+                if (receiver > sender) {
+                    answer[i] = i - num + 1;
+                    break;
+                }
+            }
+            for (int j = i - num; j < i; j++)
+                stack.push(heights[j]);
+        }
+        return answer;
     }
 }
