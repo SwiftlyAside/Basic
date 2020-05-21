@@ -470,4 +470,17 @@ public class Solutions {
         }
         return answer;
     }
+
+    public int solutionOfTournament(int n, int a, int b) {
+        int answer = 0;
+        while (a != b) {
+            a = a % 2 == 1 ? a / 2 + 1 : a / 2;
+            if (a <= 0) a = 1;
+            b = b % 2 == 1 ? b / 2 + 1 : b / 2;
+            if (b <= 0) b = 1;
+            answer++;
+        }
+
+        return answer;
+    }
 }
