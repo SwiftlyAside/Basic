@@ -362,10 +362,6 @@ public class Solutions {
                 if (!s2.contains(e)) s2.add(e);
             }
         }
-
-        System.out.println(s1);
-        System.out.println(s2);
-
         for (String s : s1) {
             if (!sum.contains(s)) sum.add(s);
             if (s2.contains(s)) duct.add(s);
@@ -379,6 +375,12 @@ public class Solutions {
         else answer = 65536;
 
         return answer;
+    }
+
+    public List<String> subset(String string) {
+        List<String> list = new ArrayList<>();
+        char[] chars = string.toCharArray();
+        return list;
     }
 
     public int solutionOfMini(int[] nums) {
